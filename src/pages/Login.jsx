@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { HiOutlineArrowRight, HiOutlineCheck } from "react-icons/hi";
+import { HiOutlineArrowRight } from "react-icons/hi";
 
 export default function MrTodoLogin() {
   const [email, setEmail] = useState("");
@@ -13,14 +13,6 @@ export default function MrTodoLogin() {
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 sm:px-6">
       <div className="w-full max-w-sm">
-        {/* Mark */}
-        <div className="flex items-center gap-2 mb-10">
-          <div className="w-7 h-7 bg-emerald-400 flex items-center justify-center">
-            <HiOutlineCheck className="w-4 h-4 text-slate-900" />
-          </div>
-          <span className="text-slate-100 font-medium">Mrtodo</span>
-        </div>
-
         <h1 className="text-2xl font-semibold text-slate-100 tracking-tight">
           Welcome back
         </h1>
