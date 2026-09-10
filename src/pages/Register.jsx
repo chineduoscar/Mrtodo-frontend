@@ -2,13 +2,22 @@ import { useState } from "react";
 import { HiOutlineArrowRight } from "react-icons/hi";
 
 export default function MrTodoRegister() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
-    // wire up to your auth logic
+    console.log(formData);
+  }
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   }
 
   return (
@@ -32,8 +41,9 @@ export default function MrTodoRegister() {
             <input
               id="name"
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={formData.fullName}
+              name="fullName"
+              onChange={handleChange}
               placeholder="Jordan Lee"
               className="w-full bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400"
             />
@@ -49,8 +59,9 @@ export default function MrTodoRegister() {
             <input
               id="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              name="email"
+              onChange={handleChange}
               placeholder="you@example.com"
               className="w-full bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400"
             />
@@ -66,8 +77,9 @@ export default function MrTodoRegister() {
             <input
               id="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              name="password"
+              onChange={handleChange}
               placeholder="At least 8 characters"
               className="w-full bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400"
             />
