@@ -1,4 +1,5 @@
 import { FaXTwitter, FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import Link from "react-router-dom";
 
 const columns = [
   {
@@ -25,11 +26,11 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr] gap-10">
           {/* Brand */}
           <div>
-            <a href="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <span className="text-lg font-semibold text-slate-100 tracking-tight">
                 Mrtodo
               </span>
-            </a>
+            </Link>
             <p className="mt-3 text-sm text-slate-400 max-w-xs leading-relaxed">
               One place to capture tasks, sort what matters, and get things
               done.
@@ -68,12 +69,12 @@ export default function Footer() {
               <ul className="mt-4 space-y-3">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.to}
+                    <Link
+                      to={link.to}
                       className="text-sm text-slate-400 hover:text-slate-200 transition-colors"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

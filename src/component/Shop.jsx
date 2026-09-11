@@ -1,4 +1,4 @@
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HiArrowRight } from "react-icons/hi";
 import { FaChalkboard } from "react-icons/fa";
 import { GiDesk } from "react-icons/gi";
@@ -51,13 +51,13 @@ export default function Shop() {
           })}
         </div>
 
-        <a
+        <Link
           to="/products"
           className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
         >
           Shop all productivity tools
           <HiArrowRight className="w-4 h-4" />
-        </a>
+        </Link>
       </div>
     </section>
   );

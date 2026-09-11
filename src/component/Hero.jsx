@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { HiOutlinePlus } from "react-icons/hi";
 import { MdCheckCircle, MdRadioButtonUnchecked } from "react-icons/md";
 
@@ -35,18 +36,18 @@ export default function Hero() {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
-              <a
-                to="/signup"
+              <Link
+                to="/register"
                 className="inline-flex items-center justify-center rounded-md bg-emerald-500 px-6 py-3 text-sm font-medium text-slate-900 hover:bg-emerald-400 transition-colors"
               >
                 Start for free
-              </a>
-              <a
+              </Link>
+              <Link
                 to="/products"
                 className="inline-flex items-center justify-center rounded-md border border-slate-700 px-6 py-3 text-sm font-medium text-slate-200 hover:border-slate-500 hover:text-white transition-colors"
               >
-                See how it works
-              </a>
+                See our products
+              </Link>
             </div>
 
             <p className="mt-6 text-sm text-slate-500">

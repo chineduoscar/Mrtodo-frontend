@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
 
 export default function MrTodoHeader() {
   const [open, setOpen] = useState(false);
 
   const links = [
-    { label: "Home", href: "#" },
-    { label: "Products", href: "#" },
-    { label: "About", href: "#" },
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+    { label: "About", href: "/about" },
   ];
 
   return (
@@ -15,33 +16,33 @@ export default function MrTodoHeader() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 shrink-0">
+          <Link to={"/"} className="flex items-center gap-2 shrink-0">
             <span className="text-lg font-semibold text-slate-100 tracking-tight">
               Mrtodo
             </span>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8">
             {links.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
+                to={link.href}
                 className="text-sm text-slate-300 hover:text-white transition-colors"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           {/* Login (desktop) */}
           <div className="hidden md:block">
-            <a
-              href="#"
+            <Link
+              to="/login"
               className="inline-flex items-center rounded-md bg-emerald-500 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-emerald-400 transition-colors"
             >
               Log in
-            </a>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -64,20 +65,20 @@ export default function MrTodoHeader() {
           <div className="md:hidden pb-4">
             <nav className="flex flex-col gap-1">
               {links.map((link) => (
-                <a
+                <Link
                   key={link.label}
-                  href={link.href}
+                  to={link.href}
                   className="rounded-md px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
-              <a
-                href="#"
+              <Link
+                to="/login"
                 className="mt-2 rounded-md bg-emerald-500 px-3 py-2 text-center text-sm font-medium text-slate-900 hover:bg-emerald-400 transition-colors"
               >
                 Log in
-              </a>
+              </Link>
             </nav>
           </div>
         )}
