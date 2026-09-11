@@ -40,7 +40,7 @@ export default function Sidebar({ open, onClose }) {
         {/* Brand */}
         <div className="flex items-center justify-between px-5 h-16 border-b border-slate-800 shrink-0">
           <span className="text-lg font-semibold text-slate-100">
-            mr<span className="text-emerald-400">todo</span>
+            Mr<span className="text-emerald-400">todo</span>
           </span>
           <button
             onClick={onClose}
