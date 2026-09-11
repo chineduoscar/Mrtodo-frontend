@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HiOutlineArrowRight } from "react-icons/hi";
 
-export default function MrTodoRegister() {
+export default function Register() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",

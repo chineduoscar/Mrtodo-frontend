@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HiOutlineArrowRight } from "react-icons/hi";
 
-export default function MrTodoLogin() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

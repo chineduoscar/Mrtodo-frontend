@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
 
-export default function MrTodoHeader() {
+export default function Header() {
   const [open, setOpen] = useState(false);
 
   const links = [
