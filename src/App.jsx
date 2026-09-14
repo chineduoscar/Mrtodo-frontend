@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/main/Home";
@@ -18,6 +19,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />

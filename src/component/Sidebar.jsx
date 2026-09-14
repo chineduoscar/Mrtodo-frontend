@@ -20,6 +20,22 @@ const navItems = [
 ];
 
 export default function Sidebar({ open, onClose }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const { fullName, email } = user;
+
+  const shortenName = () => {
+    let short;
+    const names = fullName.split(" ");
+    if (names.length === 1) {
+      short = names[0].slice(0, 2);
+      return short.toUpperCase();
+    } else {
+      short = `${names[0].slice(0, 1)}${names[1].slice(0, 1)}`;
+
+      return short.toUpperCase();
+    }
+  };
+
   return (
     <>
       {/* Mobile backdrop */}
@@ -106,13 +122,11 @@ export default function Sidebar({ open, onClose }) {
 
           <div className="flex items-center gap-3 pt-3 mt-2 border-t border-slate-800">
             <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-xs font-medium text-slate-300 shrink-0">
-              AI
+              {shortenName()}
             </div>
             <div className="min-w-0">
-              <p className="text-sm text-slate-200 truncate">Aisosa Igbinosa</p>
-              <p className="text-xs text-slate-500 truncate">
-                aisosa@mrtodo.com
-              </p>
+              <p className="text-sm text-slate-200 truncate">{fullName}</p>
+              <p className="text-xs text-slate-500 truncate">{email}</p>
             </div>
           </div>
         </div>

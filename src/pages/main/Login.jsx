@@ -1,13 +1,42 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { HiOutlineArrowRight } from "react-icons/hi";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    // wire up to your auth logic
+  async function handleSubmit(e) {
+    try {
+      e.preventDefault();
+      console.log(formData);
+      const response = await axios.post(
+        "http://localhost:3000/auth/login",
+        formData,
+      );
+
+      const data = response.data;
+      Cookies.set("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      toast.success(data.message);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  }
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   }
 
   return (
@@ -31,8 +60,9 @@ export default function Login() {
             <input
               id="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="you@example.com"
               className="w-full bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400"
             />
@@ -56,8 +86,9 @@ export default function Login() {
             <input
               id="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
               placeholder="••••••••"
               className="w-full bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400"
             />

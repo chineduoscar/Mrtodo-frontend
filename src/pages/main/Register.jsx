@@ -1,16 +1,36 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { HiOutlineArrowRight } from "react-icons/hi";
+import { toast } from "react-toastify";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     password: "",
   });
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log(formData);
+  async function handleSubmit(e) {
+    try {
+      e.preventDefault();
+      console.log(formData);
+      const response = await axios.post(
+        "http://localhost:3000/auth/register",
+        formData,
+      );
+
+      const data = response.data;
+      Cookies.set("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      toast.success(data.message);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   function handleChange(e) {
