@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -26,9 +27,17 @@ export default function Login() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       toast.success(data.message);
-      navigate("/dashboard");
+
+      const decoded = jwtDecode(data.token);
+
+      if (decoded.role === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
-      console.log(error.response.data.message);
+      console.log(error.response);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   }
 
@@ -49,7 +58,7 @@ export default function Login() {
           Pick up your list where you left it.
         </p>
 
-        <div onSubmit={handleSubmit} className="mt-8 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
             <label
               htmlFor="email"
@@ -95,13 +104,13 @@ export default function Login() {
           </div>
 
           <button
-            onClick={handleSubmit}
+            type="submit"
             className="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-medium text-sm py-2.5 flex items-center justify-center gap-1.5 transition-colors"
           >
             Sign in
             <HiOutlineArrowRight className="w-4 h-4" />
           </button>
-        </div>
+        </form>
 
         <p className="mt-8 text-sm text-slate-500 text-center">
           New here?{" "}

@@ -1,12 +1,9 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import {
   HiOutlineViewGrid,
   HiOutlineClipboardList,
-  HiOutlineCalendar,
-  HiOutlineClock,
-  HiOutlineCog,
   HiOutlineLogout,
-  HiOutlinePlus,
   HiX,
 } from "react-icons/hi";
 import { MdCheckCircle } from "react-icons/md";
@@ -14,12 +11,11 @@ import { MdCheckCircle } from "react-icons/md";
 const navItems = [
   { to: "/dashboard", label: "Overview", icon: HiOutlineViewGrid, end: true },
   { to: "/dashboard/todos", label: "All todos", icon: HiOutlineClipboardList },
-  { to: "/dashboard/today", label: "Today", icon: HiOutlineCalendar },
-  { to: "/dashboard/upcoming", label: "Upcoming", icon: HiOutlineClock },
   { to: "/dashboard/completed", label: "Completed", icon: MdCheckCircle },
 ];
 
 export default function Sidebar({ open, onClose }) {
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const { fullName, email } = user;
 
@@ -31,9 +27,14 @@ export default function Sidebar({ open, onClose }) {
       return short.toUpperCase();
     } else {
       short = `${names[0].slice(0, 1)}${names[1].slice(0, 1)}`;
-
       return short.toUpperCase();
     }
+  };
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
   return (
@@ -67,14 +68,6 @@ export default function Sidebar({ open, onClose }) {
           </button>
         </div>
 
-        {/* New task */}
-        <div className="px-4 pt-4">
-          <button className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-emerald-500 px-4 py-2.5 text-sm font-medium text-slate-900 hover:bg-emerald-400 transition-colors">
-            <HiOutlinePlus className="w-4 h-4" />
-            New task
-          </button>
-        </div>
-
         {/* Nav */}
         <nav className="flex-1 px-3 pt-6 space-y-1 overflow-y-auto">
           <p className="px-2 pb-2 text-xs font-medium text-slate-600">Menu</p>
@@ -100,22 +93,10 @@ export default function Sidebar({ open, onClose }) {
 
         {/* Footer */}
         <div className="border-t border-slate-800 p-3">
-          <NavLink
-            to="/dashboard/settings"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors ${
-                isActive
-                  ? "bg-emerald-500/10 text-emerald-400"
-                  : "text-slate-400 hover:bg-slate-900 hover:text-slate-200"
-              }`
-            }
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition-colors"
           >
-            <HiOutlineCog className="w-4.5 h-4.5 shrink-0" />
-            Settings
-          </NavLink>
-
-          <button className="w-full flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition-colors">
             <HiOutlineLogout className="w-4.5 h-4.5 shrink-0" />
             Log out
           </button>

@@ -10,11 +10,11 @@ import Register from "./pages/main/Register";
 
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/dashboard/Dashboard";
-// import AllTodos from "./pages/dashboard/AllTodos";
-// import Today from "./pages/dashboard/Today";
-// import Upcoming from "./pages/dashboard/Upcoming";
-// import Completed from "./pages/dashboard/Completed";
-// import Settings from "./pages/dashboard/Settings";
+import ProtectedRoute from "./middleware/ProtectedRoute";
+import AllTodos from "./pages/dashboard/AllTodos";
+import Completed from "./pages/dashboard/Completed";
+import AdminRoute from "./middleware/AdminRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function App() {
   return (
@@ -28,13 +28,16 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Route>
 
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
-          {/* <Route path="todos" element={<AllTodos />} />
-          <Route path="today" element={<Today />} />
-          <Route path="upcoming" element={<Upcoming />} />
-          <Route path="completed" element={<Completed />} />
-          <Route path="settings" element={<Settings />} /> */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="todos" element={<AllTodos />} />
+            <Route path="completed" element={<Completed />} />
+          </Route>
+        </Route>
+
+        <Route element={<AdminRoute />}>
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

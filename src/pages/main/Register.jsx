@@ -29,7 +29,8 @@ export default function Register() {
       toast.success(data.message);
       navigate("/dashboard");
     } catch (error) {
-      console.log(error.message);
+      console.log(error.response);
+      toast.error(error.response.data.message || "Something went wrong");
     }
   }
 

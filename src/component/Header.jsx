@@ -1,9 +1,25 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const token = Cookies.get("token");
+  let decoded;
+
+  if (token) {
+    decoded = jwtDecode(token);
+  }
+
+  let dashboardLink;
+
+  if (decoded?.role === "admin") {
+    dashboardLink = "/admin-dashboard";
+  } else {
+    dashboardLink = "/dashboard";
+  }
 
   const links = [
     { label: "Home", href: "/" },
@@ -35,13 +51,12 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Login (desktop) */}
           <div className="hidden md:block">
             <Link
-              to="/login"
+              to={token ? dashboardLink : "/login"}
               className="inline-flex items-center rounded-md bg-emerald-500 px-4 py-2 text-sm font-medium text-slate-900 hover:bg-emerald-400 transition-colors"
             >
-              Log in
+              {token ? "Dashboard" : "Log in"}
             </Link>
           </div>
 
@@ -74,10 +89,10 @@ export default function Header() {
                 </Link>
               ))}
               <Link
-                to="/login"
+                to={token ? dashboardLink : "/login"}
                 className="mt-2 rounded-md bg-emerald-500 px-3 py-2 text-center text-sm font-medium text-slate-900 hover:bg-emerald-400 transition-colors"
               >
-                Log in
+                {token ? "Dashboard" : "Log in"}
               </Link>
             </nav>
           </div>

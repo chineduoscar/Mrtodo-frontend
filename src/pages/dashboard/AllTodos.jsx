@@ -1,54 +1,63 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import { HiOutlinePlus, HiOutlineClipboardList } from "react-icons/hi";
 import {
   MdCheckCircle,
   MdRadioButtonUnchecked,
   MdDelete,
 } from "react-icons/md";
-import TodoDetailModal from "../modal/TodoDetailModal";
-import AddTodoModal from "../modal/AddTodoModal";
+import TodoDetailModal from "../../component/modal/TodoDetailModal";
 
-export default function DashboardHome() {
+const AllTodos = () => {
   const token = Cookies.get("token");
 
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
-    const fetchTodo = async () => {
+    const fetchTodos = async () => {
       try {
         const response = await axios.get("http://localhost:3000/todos", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
         setTasks(response.data.data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchTodo();
+    fetchTodos();
   }, [token]);
 
   const toggle = async (id) => {
+    console.log("clicked");
     try {
       const task = tasks.find((task) => {
         return task._id === id;
       });
-      const response = await axios.patch(
+      const response = await axios.get(
         `http://localhost:3000/todos/${id}`,
         { completed: !task.completed },
-        { headers: { Authorization: `Bearer ${token}` } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
+      setTasks(response.data.data);
+      console.log(response.data.data);
 
       setTasks((prev) =>
         prev.map((task) => {
-          return task._id === id ? response.data.data : task;
+          if (task._id === id) {
+            return {
+              ...task,
+              completed: !task.completed,
+            };
+          }
+          return task;
         }),
       );
     } catch (error) {
@@ -57,73 +66,33 @@ export default function DashboardHome() {
   };
 
   const deleteTodo = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3000/todos/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setTasks((prev) =>
-        prev.filter((task) => {
-          return task._id !== id;
-        }),
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    setTasks((prev) => prev.filter((task) => task._id !== id));
   };
 
-  const handleTaskAdded = (newTask) => {
-    setTasks((prev) => [...prev, newTask]);
-  };
-
-  const doneCount = tasks.filter((task) => {
-    return task?.completed;
-  }).length;
-
-  const pending = tasks.length - doneCount;
-
-  const stats = [
-    { label: "Open tasks", value: pending, icon: HiOutlineClipboardList },
-    { label: "Completed", value: doneCount, icon: MdCheckCircle },
-  ];
+  const doneCount = tasks.filter((task) => task.completed).length;
 
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-slate-100">Overview</h1>
+        <h1 className="text-2xl font-semibold text-slate-100">All todos</h1>
         <p className="mt-1 text-sm text-slate-500">
-          Here's what's on your plate today.
+          Everything on your list, done or not.
         </p>
       </div>
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-        {stats.map(({ label, value, icon: Icon }) => (
-          <div
-            key={label}
-            className="rounded-xl border border-slate-800 bg-slate-950/60 p-5 flex items-center gap-4"
-          >
-            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0">
-              <Icon className="w-5 h-5 text-emerald-400" />
-            </div>
-            <div>
-              <p className="text-2xl font-semibold text-slate-100">{value}</p>
-              <p className="text-sm text-slate-500">{label}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Task list — same visual language as the Hero mockup */}
       <div className="rounded-xl border border-slate-800 bg-slate-950/60 shadow-2xl shadow-black/30">
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
-          <span className="text-sm font-medium text-slate-300">Today</span>
+          <span className="text-sm font-medium text-slate-300">All todos</span>
           <span className="text-xs text-slate-500">
             {doneCount}/{tasks.length} done
           </span>
         </div>
+
+        {tasks.length === 0 && (
+          <p className="px-5 py-6 text-sm text-slate-500">
+            You don't have any todos yet.
+          </p>
+        )}
 
         <ul className="divide-y divide-slate-800">
           {tasks.map((task) => (
@@ -167,16 +136,7 @@ export default function DashboardHome() {
             </li>
           ))}
         </ul>
-
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="w-full flex items-center gap-2 px-5 py-4 border-t border-slate-800 text-slate-500 hover:text-slate-300 transition-colors"
-        >
-          <HiOutlinePlus className="w-4 h-4" />
-          <span className="text-sm">Add a task</span>
-        </button>
       </div>
-      <div className="h-600"></div>
 
       {selectedTask && (
         <TodoDetailModal
@@ -184,13 +144,8 @@ export default function DashboardHome() {
           onClose={() => setSelectedTask(null)}
         />
       )}
-
-      {showAddModal && (
-        <AddTodoModal
-          onClose={() => setShowAddModal(false)}
-          onAdded={handleTaskAdded}
-        />
-      )}
     </div>
   );
-}
+};
+
+export default AllTodos;
